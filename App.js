@@ -1,21 +1,21 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { createStore, applyMiddleware } from 'redux';
+import thunkMiddleware from 'redux-thunk';
+import { Provider } from 'react-redux';
+import reducer from './reducers/index';
+import { createLogger } from 'redux-logger';
+import Index from './containers/';
+
+const loggerMiddleware = createLogger();
+const createStoreWithMiddleware = applyMiddleware(thunkMiddleware, loggerMiddleware)(createStore);
+const store = createStoreWithMiddleware(reducer);
 
 export default class App extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text>First sight</Text>
-      </View>
+      <Provider store={store}>
+        <Index/>
+      </Provider>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
